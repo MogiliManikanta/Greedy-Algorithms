@@ -1,0 +1,94 @@
+In a stock market, there is a product with its infinite stocks. The stock prices are given for N days, where price[i] denotes the price of the stock on the ith day.
+There is a rule that a customer can buy at most i stock on the ith day.
+If the customer has an amount of k amount of money initially. The task is to find out the maximum number of stocks a customer can buy. 
+
+Example 1:
+
+Input:
+price[] = { 10, 7, 19 }
+k = 45
+Output: 4
+Explanation: A customer purchases 1 stock on day 1, 
+2 stocks on day 2 and 1 stock on day 3 for 
+10, 7 * 2 = 14 and 19 respectively. Hence, 
+total amount is 10 + 14 + 19 = 43 and number 
+of stocks purchased is 4.
+Example 2:
+
+Input: 
+price[] = { 7, 10, 4 }
+k = 100
+Output: 6
+ 
+
+Your Task:  
+You don't need to read input or print anything. Your task is to complete the function buyMaximumProducts() which takes an array price and an integer k and returns an integer as output.
+
+Expected Time Complexity: O(NlogN)
+Expected Auxiliary Space: O(N)
+
+ 
+
+Constraints:
+1 <= N <= 103
+1 <= price[i] <= 103
+1 <= k <= 103
+ __________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+ //{ Driver Code Starts
+import java.io.*;
+import java.util.*;
+
+class GFG {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t;
+        t = Integer.parseInt(br.readLine());
+        while(t-- > 0){
+            String str=br.readLine();
+    		String[] starr=str.split(" ");
+    		
+    		//input n and d
+    	    int n=Integer.parseInt(starr[0]);
+    		int k= Integer.parseInt(starr[1]);
+            
+            starr = br.readLine().trim().split(" ");
+            int[] price = new int[n];
+            for(int i = 0; i < n; i++)
+                price[i] = Integer.parseInt(starr[i]);
+            
+            Solution obj = new Solution();
+            int res = obj.buyMaximumProducts(n, k, price);
+            
+            System.out.println(res);
+            
+        }
+    }
+}
+
+// } Driver Code Ends
+
+
+class Solution {
+    public static int buyMaximumProducts(int n, int k, int[] price) {
+        // code here
+        List<int[]> list = new ArrayList<>();
+        for(int i=0 ;i<n ;i++){
+            list.add(new int[]{i+1, price[i]});
+        }
+        Collections.sort(list, (a,b) -> Integer.compare(a[1], b[1]));
+        int res = 0, p = 0;
+        while(k > 0 && p < n){
+            int[] stock = list.get(p);
+            int x = k/stock[1];
+            if(x > stock[0]){
+                res += stock[0];
+                k -= stock[0]*stock[1];
+            }else{
+                res += x;
+                k -= x*stock[1];
+            }
+            p++;
+        }
+        return res;
+    }
+}
