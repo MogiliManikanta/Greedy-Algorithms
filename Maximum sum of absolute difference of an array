@@ -1,0 +1,59 @@
+Given an array, we need to find the maximum sum of the absolute difference of any permutation of the given array.
+
+Examples:  
+
+Input : { 1, 2, 4, 8 }
+Output : 18
+Explanation : For the given array there are 
+several sequence possible
+like : {2, 1, 4, 8}
+       {4, 2, 1, 8} and some more.
+Now, the absolute difference of an array sequence will be
+like for this array sequence {1, 2, 4, 8}, the absolute
+difference sum is 
+= |1-2| + |2-4| + |4-8| + |8-1|
+= 14
+For the given array, we get the maximum value for
+the sequence {1, 8, 2, 4}
+= |1-8| + |8-2| + |2-4| + |4-1|
+= 18
+___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+The space can be optimized to O(1), since we are constructing new array by putting alternate term one behind the other, instead to constructing new array we can just pick the alternates from the array using 2 pointer technique and calculate the answer:
+
+Follow the below steps to implement the above idea:
+
+Sort the array
+Initialize 2 variable i=0, j = size – 1
+Set a flag (true if we will increment i and false if we will decrement j) in order to track which variable needs to be changed. since after first move we will select next min value i.e. increment i, it will be initialised as true;
+Run the while loop and calculate sum for every i and j, and change i and j accordingly
+After the loop we need to calculate the difference of middle element and first. this will be done separately.
+______________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+/*package whatever //do not write package name here */
+import java.io.*;
+import java.util.Arrays;
+
+class GFG {
+public static int maxSum(int[] arr, int n) {
+	Arrays.sort(arr);
+	int i = 0, j = n - 1, sum = 0;
+	boolean off = true;
+	while(i < j) {
+	sum += Math.abs(arr[i] - arr[j]);
+	if(off) {
+		i++;
+	} else {
+		j--;
+	}
+	off = !off;
+	}
+	sum += Math.abs(arr[0] - arr[n/2]);
+	return sum;
+}
+
+public static void main(String[] args) {
+	int[] arr = {1,2,4,8};
+	System.out.println(maxSum(arr, arr.length));
+}
+}
+
+// This code is contributed by rishabhtiwari759.
