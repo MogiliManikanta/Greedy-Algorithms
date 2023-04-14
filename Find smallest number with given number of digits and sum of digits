@@ -1,0 +1,96 @@
+The task is to find the smallest number with given sum of digits as S and number of digits as D.
+
+ 
+
+Example 1:
+
+Input:
+S = 9 
+D = 2
+Output:
+18
+Explanation:
+18 is the smallest number
+possible with sum = 9
+and total digits = 2.
+ 
+
+Example 2:
+
+Input:
+S = 20
+D = 3
+Output:
+299
+Explanation:
+299 is the smallest number
+possible with sum = 20
+and total digits = 3.
+ 
+
+Your Task:
+
+You don't need to read input or print anything. Your task is to complete the function smallestNumber() which takes the two integers S and D and returns a string which is the smallest number if possible, else return "-1".
+
+ 
+
+Expected Time Complexity: O(D)
+Expected Auxiliary Space: O(1)
+
+ 
+
+Constraints:
+1 ≤ S ≤ 100
+1 ≤ D ≤ 6
+___________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+//{ Driver Code Starts
+//Initial Template for Java
+import java.io.*;
+import java.util.*;
+
+class GFG
+{
+    public static void main(String args[])throws IOException
+    {
+        BufferedReader read = new BufferedReader(new InputStreamReader(System.in));
+        int t = Integer.parseInt(read.readLine());
+        while(t-- > 0)
+        {
+            String[] inp=read.readLine().split(" ");
+            int S=Integer.parseInt(inp[0]);
+            int D=Integer.parseInt(inp[1]);
+
+            Solution ob = new Solution();
+            System.out.println(ob.smallestNumber(S,D));
+        }
+    }
+}
+// } Driver Code Ends
+
+
+//User function Template for Java
+class Solution{
+    static String smallestNumber(int S, int D){
+        char[] num = new char[D];
+        Arrays.fill(num, '0');
+        num[0] = '1';
+        S--;
+        for(int i = D-1 ; i > 0 ; i--){
+            if(S >= 9){
+                num[i] = '9';
+                S -= 9;
+            }
+            else{
+                num[i] = (char)('0' + S);
+                S = 0;
+                return String.valueOf(num);
+            }
+        }
+        if(S == 0) return String.valueOf(num);
+        if(S <= 8){
+            num[0] = (char)('0' + S + 1);
+            return String.valueOf(num);
+        }
+        return "-1";
+    }
+}
