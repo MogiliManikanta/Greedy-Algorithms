@@ -1,0 +1,157 @@
+You have given N cities numbered from 0 to N-1. The distance between each pair of cities is given by N * N matrix MAT where MAT[i][j] denotes the distance between city i and j.
+The task is to select K (K<= N) ATM servers  in such a way that the maximum distance of a city from the ATM Server is minimized.
+Example 1:
+Input: N = 4, K = 2,
+MAT[][] = {{0, 10, 7, 6},
+           {10, 0, 8, 5},
+           {7, 8, 0, 12},
+           {6, 5, 12, 0}}
+Output: 6
+Explanation:
+
+
+Your Task:
+You don't need to read or print anything. Your task is to complete the function selectKcities() which takes N, K  and MAT[][] as input parameter and returns an integer, indicating the maximum distance of a city from the ATM Server, which is minimized.
+
+Expected Time Complexity: O(N * K * (2 ^ N))
+Expected Space Complexity: O(K)
+
+ 
+
+Constraints:
+1 <= K <= N <= 15
+1 <= MAT[i][j] <= 10^9
+____________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________________
+//{ Driver Code Starts
+import java.io.*;
+import java.util.*;
+
+
+class IntArray
+{
+    public static int[] input(BufferedReader br, int n) throws IOException
+    {
+        String[] s = br.readLine().trim().split(" ");
+        int[] a = new int[n];
+        for(int i = 0; i < n; i++)
+            a[i] = Integer.parseInt(s[i]);
+        
+        return a;
+    }
+    
+    public static void print(int[] a)
+    {
+        for(int e : a)
+            System.out.print(e + " ");
+        System.out.println();
+    }
+    
+    public static void print(ArrayList<Integer> a)
+    {
+        for(int e : a)
+            System.out.print(e + " ");
+        System.out.println();
+    }
+}
+
+
+class IntMatrix
+{
+    public static int[][] input(BufferedReader br, int n, int m) throws IOException
+    {
+        int[][] mat = new int[n][];
+        
+        for(int i = 0; i < n; i++)
+        {
+            String[] s = br.readLine().trim().split(" ");
+            mat[i] = new int[s.length];
+            for(int j = 0; j < s.length; j++)
+                mat[i][j] = Integer.parseInt(s[j]);
+        }
+        
+        return mat;
+    }
+    
+    public static void print(int[][] m)
+    {
+        for(var a : m)
+        {
+            for(int e : a)
+                System.out.print(e + " ");
+            System.out.println();
+        }
+    }
+    
+    public static void print(ArrayList<ArrayList<Integer>> m)
+    {
+        for(var a : m)
+        {
+            for(int e : a)
+                System.out.print(e + " ");
+            System.out.println();
+        }
+    }
+}
+
+class GFG {
+    public static void main(String[] args) throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        int t;
+        t = Integer.parseInt(br.readLine());
+        while(t-- > 0){
+            
+            int[] a = IntArray.input(br, 2);
+            int n = a[0],k=a[1];
+            
+            int[][] mat = IntMatrix.input(br, a[0], a[0]);
+            
+            Solution obj = new Solution();
+            int res = obj.selectKcities(n,k, mat);
+            
+            System.out.println(res);
+            
+        }
+    }
+}
+
+// } Driver Code Ends
+
+
+class Solution {
+    public static int selectKcities(int n,int k, int[][] mat) {
+        int ans = Integer.MAX_VALUE;
+        
+        for(int i=0;i<n;i++){
+            ans = Math.min(ans,helper(n,k,mat,i));
+        }
+        return ans;
+    }
+    private static int helper(int n, int k, int[][] mat, int max){
+     //max is current city with atm.
+
+        int[] dist = new int[n];
+        Arrays.fill(dist,Integer.MAX_VALUE);
+        
+        ArrayList<Integer> atms = new ArrayList<>();
+    
+        while(k-- > 0){
+            atms.add(max);
+            for(int i=0;i<n;i++){
+                dist[i] = Math.min(dist[i],mat[max][i]);
+            }
+            max = maxValueIndex(dist, n); // choosing the city farthest away from current atm city to place atm there
+        }
+        return dist[max];
+    }
+    static int maxValueIndex(int[] dist, int n)
+    {
+        int j = 0;
+        for(int i = 0; i < n; i++)
+        {
+            if (dist[i] > dist[j])
+                j = i;
+        }
+        return j;
+    }
+}
+        
